@@ -9,7 +9,7 @@ BOLD='\033[1m'
 
 # Read input file line-by-line and parse whether the rotation should go up or down, then print the number of zeros passed over and landed on.
 
-string="$HOME/aoc/2025/01-string.txt"
+string="$HOME/aoc/2025/01/01-string.txt"
 rotation=50
 zeros=0
 
