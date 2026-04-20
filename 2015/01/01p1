@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+
+up=$(cat $HOME/aoc/2015/01/01-string.txt | tr -cd "(" | wc -m) 
+
+echo "The number of floors he moves up are: $up."
+
+down=$(cat $HOME/aoc/2015/01/01-string.txt | tr -cd ")" | wc -m)
+
+echo "The number of floors he moves down are: $down."
+
+
+floor=$(($up - $down))
+
+echo "He ends on floor: $floor."

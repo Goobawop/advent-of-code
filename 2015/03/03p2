@@ -1,0 +1,69 @@
+#!/bin/bash
+
+
+# Colors
+
+NC='\033[0m'
+BOLD='\033[1m'
+MAGENTA='\033[35m'
+
+
+# Set variables and declare arrays.
+
+string=$(cat $HOME/aoc/2015/03/03-string.txt)
+
+declare -A graph
+declare -A seen
+
+x1=0
+x2=0
+y1=0
+y2=0
+position1="($x1,$y1)"
+position2="($x2,$y2)"
+counter1=0
+counter2=0
+
+# Chart movement based on santa's "x" and "y" positions.
+
+for (( i=0; i<${#string}; i=i+2 )); do
+	char="${string:$i:1}"
+
+	case "$char" in
+		"^") (( y1++ )) ;;
+		">") (( x1++ )) ;;
+		"v") (( y1-- )) ;;
+		"<") (( x1-- )) ;;
+	esac
+
+	position1="($x1,$y1)"
+
+	seen["$position1"]=1
+done
+
+echo -e $MAGENTA"Santa's Route Complete"
+
+# Chart movement based on robo-santa's "x" and "y" positions.
+
+for (( i=1; i<${#string}; i=i+2 )); do
+	char="${string:$i:1}"
+
+	case "$char" in
+		"^") (( y2++ )) ;;
+		">") (( x2++ )) ;;
+		"v") (( y2-- )) ;;
+		"<") (( x2-- )) ;;
+	esac
+
+	position2="($x2,$y2)"
+	
+	seen["$position2"]=1
+done
+
+echo "Robo-Santa's Route Complete"
+
+# Print number of unique values seen.
+
+echo -e $MAGENTA
+echo "Number of houses that received at least 1 present:${#seen[@]}."
+echo -e $NC

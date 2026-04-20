@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Colors
+
+NC='\033[0m'
+BOLD='\033[1m'
+MAGENTA='\033[35m'
+
+
+# 

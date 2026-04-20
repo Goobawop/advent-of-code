@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Find position of the first character that causes him to enter the basement (floor -1).
+
+string=$(cat $HOME/aoc/2015/01/01-string.txt)
+counter=0
+
+for (( i=0; i<${#string}; i++)); do
+	char="${string:$i:1}"
+
+	case "$char" in
+		"(") ((counter++)) ;;
+		")") 
+			if [ $counter -eq -1 ]; then
+				echo "He first enters the basement at character postition: $i" && exit
+			else
+				((counter--)) 
+			fi ;;
+	esac
+done
+
+echo $counter

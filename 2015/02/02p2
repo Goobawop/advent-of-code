@@ -1,0 +1,50 @@
+#!/bin/bash
+
+
+# Colors
+
+MAGENTA='\033[35m'
+NC='\033[0m'
+
+
+# Read through file line by line and set variables based on values separated by "x" (length, width, and height). The perform calculations based on those variables and output the result.
+
+while IFS=x read -r l w h; do
+
+	bow=$(( $l * $w * $h ))
+
+
+	if
+		(( $l <= $w && $w <= $h )); then
+		v1=$l
+		v2=$w
+	elif
+		(( $l <= $h && $h <= $w )); then
+		v1=$l
+		v2=$h
+	elif
+		(( $w <= $l && $l <= $h )); then
+		v1=$w
+		v2=$l
+	elif
+		(( $w <= $h && $h <= $l )); then
+		v1=$w
+		v2=$h
+	elif
+		(( $h <= $w && $w <= $l )); then
+		v1=$h
+		v2=$w
+	elif
+		(( $h <= $l && $l <= $w )); then
+		v1=$h
+		v2=$l
+	fi
+	
+	total=$(( $total + $bow + 2 * ( $v1 + $v2 ) ))
+
+done < $HOME/aoc/2015/02/02-string.txt
+
+echo
+echo -e $MAGENTA"Total feet of ribbon to be ordered:"
+echo -e $NC"$total"
+echo

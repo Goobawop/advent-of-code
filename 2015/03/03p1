@@ -1,0 +1,52 @@
+#!/bin/bash
+
+
+# Colors
+
+NC='\033[0m'
+BOLD='\033[1m'
+MAGENTA='\033[35m'
+
+
+# Set variables and assign values.
+
+string=$(cat $HOME/aoc/2015/03/03-string.txt)
+
+declare -A graph
+declare -A seen
+
+x=0
+y=0
+position="($x,$y)" 
+counter=0
+
+# Chart movement based on "x" and "y" positions, then count unique number of houses visited.
+
+
+for (( i=0; i<${#string}; i++ )); do
+	char="${string:$i:1}"
+
+	case "$char" in
+		"^") (( y++ )) ;;
+		">") (( x++ )) ;;
+		"v") (( y-- )) ;;
+		"<") (( x-- )) ;;
+	esac
+
+	position="($x,$y)"
+
+	graph[$counter]="$position"
+
+	((counter++))
+done
+
+
+# Parse graph array and print number of unique values.
+
+for value in "${graph[@]}"; do	
+	seen["$value"]=1
+done
+
+echo -e $MAGENTA
+echo "Number of houses that received at least 1 present:${#seen[@]}."
+echo -e $NC

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+# Colors
+
+MAGENTA='\033[35m'
+NC='\033[0m'
+
+while IFS=x read -r l w h; do
+	 s1=$(( l * w ))
+	 s2=$(( w * h ))
+	 s3=$(( l * h ))
+	 surface=$(( 2 * ($s1 + $s2 + $s3) ))
+
+	if
+		(( $s1 <= $s2 && $s1 <= $s3 )) ; then
+		slack=$s1
+	elif
+		(( $s2 <= $s1 && $s2 <= $s3 )); then
+		slack=$s2
+	elif
+		(( $s3 <= $s1 && $s3 <= $s2 )); then
+		slack=$s3
+	fi
+	
+	total=$(( $total + $surface + $slack ))
+done < $HOME/aoc/2015/02/02-string.txt
+
+echo
+echo -e $MAGENTA"Total square feet of wrapping paper necessary:"
+echo -e $NC"$total"
+echo

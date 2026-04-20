@@ -1,0 +1,39 @@
+#!/bin/bash
+
+
+# Colors
+
+MAGENTA='\033[35m'
+NC='\033[0m'
+BOLD='\033[1m'
+
+
+# Read input file line-by-line and parse whether the rotation should go up or down, then print the number of zeros passed over and landed on.
+
+string="$HOME/aoc/2025/01-string.txt"
+rotation=50
+zeros=0
+wrap=0
+
+while IFS= read -r line; do
+	char="${line:0:1}"
+	num="${line:1}"
+
+	prev=$rotation
+
+	case "$char" in
+		"L") (( rotation -= num )) ;;
+		"R") (( rotation += num )) ;;
+	esac
+
+	rotation=$(( (rotation + 100) % 100 ))
+	
+	if (( rotation == 0 )); then
+		(( zeros++ ))
+	fi
+
+done < $string
+
+echo
+echo -e "$BOLD The dial points at zero $MAGENTA$zeros$NC times."
+echo
