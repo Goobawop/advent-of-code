@@ -1,0 +1,26 @@
+#!/bin/bash
+
+
+# Colors
+
+NC='\e[0m'
+MAGENTA='\e[35m'
+
+
+#
+
+naughty=("ab" "cd" "pq" "xy")
+vowels=("a" "e" "i" "o" "u")
+counter=0
+
+while IFS= read -r line; do
+	duplicates=$(echo "$line" | fold -w1 | sort | uniq -d)
+	if
+		[[ $line != *"$naughty"* ]] && [[ $line == *"$vowels"* ]] && [[ -n "$duplicates" ]]; then
+		((counter++))
+	else
+		echo $line
+	fi
+done < "$HOME/advent-of-code/2015/05/05-string.txt"
+
+echo -e "Answer: $MAGENTA$counter"
