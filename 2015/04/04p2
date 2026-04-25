@@ -8,7 +8,7 @@ BOLD='\033[1m'
 MAGENTA='\033[35m'
 
 
-# Loop until input + counter md5 hash has at least 5 leading zeros.
+# Loop until input + counter md5 hash has at least 6 leading zeros.
 
 counter=0
 input=$(cat $HOME/advent-of-code/2015/04/04-string.txt)
