@@ -7,20 +7,18 @@ BOLD='\033[1m'
 MAGENTA='\033[35m'
 
 
-#
+# Loop until input + counter md5 hash has at least 5 leading zeros.
 
 counter=0
 input=$(cat $HOME/advent-of-code/2015/04/04-string.txt)
 
-#echo $md5hash
-
 until [[ $md5hash == 00000* ]]; do
 
-	check="$input$counter"
-	md5hash=$(printf "%s" "$check" | md5sum)
+	check=$input$counter
+	md5hash=$(echo -n "$check" | md5sum)
 	md5hash=${md5hash%% *}
 	((counter++))
 done
 
-echo "Answer: $((counter-1))"
-echo "Hash: $md5hash"
+echo -e "Answer: $MAGENTA$((counter-1))"
+echo -e $NC"Hash: $MAGENTA$md5hash"
