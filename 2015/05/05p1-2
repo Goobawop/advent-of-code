@@ -1,0 +1,44 @@
+#!/bin/bash
+
+NC='\e[0m'
+MAGENTA='\e[35m'
+
+counter=0
+
+while IFS= read -r line; do
+    vowels=0
+    double=false
+    bad=false
+    prev=""
+
+    # Rule: forbidden substrings
+    case "$line" in
+        *ab*|*cd*|*pq*|*xy*)
+            bad=true
+            ;;
+    esac
+
+    $bad && continue
+
+    # Scan characters once
+    for ((i=0; i<${#line}; i++)); do
+        c="${line:i:1}"
+
+        # count vowels
+        case "$c" in
+            a|e|i|o|u) ((vowels++)) ;;
+        esac
+
+        # adjacent duplicate
+        if [[ "$c" == "$prev" ]]; then
+            double=true
+        fi
+
+        prev="$c"
+    done
+
+    (( vowels >= 3 )) && $double && ((counter++))
+
+done < "$HOME/advent-of-code/2015/05/05-string.txt"
+
+echo -e "Answer: $MAGENTA$counter$NC"
