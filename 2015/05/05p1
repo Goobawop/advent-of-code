@@ -9,25 +9,41 @@ MAGENTA='\e[35m'
 
 #
 
-naughty=("ab" "cd" "pq" "xy")
-vowels=("a" "e" "i" "o" "u")
+#naughty=("ab" "cd" "pq" "xy")
 counter=0
 
 while IFS= read -r line; do
-	duplicates=$(echo "$line" | fold -w1 | sort | uniq -d)
-#		[[ $line != *"$naughty"* ]] && [[ $line == *"$vowels"* ]] && [[ -n "$duplicates" ]]; then
+	
+#	bad=false
+#	
+#	for pattern in "${naughty[@]}"; do
+#		if 
+#			[[ "$line" != *"$pattern"* ]]; then
+#			bad=true
+#			break
+#		fi
+#	done
+#	if ! $bad; then
+#			
+#		vowels=$(grep -o '[aeiou]' <<< "$line" | wc -l)
+#       		
+#		if (( vowels >= 3 )) && [[ "$line" =~ (.)\1 ]]; then
+#   			((counter++))
+#		fi
+#	fi
 
-	for pattern in "${naughty[@]}"; do
-		if 
-			[[ "$line" != *$pattern* ]]; then
-			for pattern2 in "${vowels[@]}"; do
-				if [[ "$line" == *$pattern2* ]]; then
-				((counter++))
-				echo "$counter"
-				fi
-			done
-		fi
-	done
+# Contains forbidden substrings
+    if [[ "$line" == *ab* || "$line" == *cd* || "$line" == *pq* || "$line" == *xy* ]]; then
+        continue
+    fi
+    # Rule 1: at least 3 vowels
+    vowels=$(grep -o '[aeiou]' <<< "$line" | wc -l)
+    (( vowels < 3 )) && continue
+
+    # Rule 2: double letter
+    [[ "$line" =~ (.)\1 ]] || continue
+
+    ((counter++))
 
 done < "$HOME/advent-of-code/2015/05/05-string.txt"
 
