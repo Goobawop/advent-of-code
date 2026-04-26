@@ -15,12 +15,25 @@ counter=0
 
 while IFS= read -r line; do
 	duplicates=$(echo "$line" | fold -w1 | sort | uniq -d)
-	if
-		[[ $line != *"$naughty"* ]] && [[ $line == *"$vowels"* ]] && [[ -n "$duplicates" ]]; then
-		((counter++))
-	else
-		echo $line
-	fi
+#	if
+#		[[ $line != *"$naughty"* ]] && [[ $line == *"$vowels"* ]] && [[ -n "$duplicates" ]]; then
+#		((counter++))
+#	else
+#		echo $line
+#fi
+
+
+	for pattern in "${naughty[@]}"; do
+		if 
+			[[ "$line" == *$pattern* ]]; then
+			((counter++))
+			echo "$counter"
+		fi
+	done
+
+
+
+
 done < "$HOME/advent-of-code/2015/05/05-string.txt"
 
 echo -e "Answer: $MAGENTA$counter"
