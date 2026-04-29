@@ -1,0 +1,66 @@
+#!/bin/bash
+
+
+# Colors
+
+NC='\e[0m'
+MAGENTA='\e[35m'
+
+# Read through input file line-by-line, character-by-character. Judge each string based on requirements.
+
+counter=0
+
+while IFS= read -r line; do
+	prevOdd=""
+	prevEven=""
+	prevChar=""
+	repeatChar=false
+	repeatStr=false
+	charCount=0
+	pattern=""
+
+	for ((i=0; i<${#line}; i++)); do
+		char="${line:i:1}"
+		((charCount++))
+
+		if 
+			(( "$charCount" > 1 )); then
+			if 
+				[[ "$line" == *$pattern**$pattern* ]]; then
+				repeatStr=true
+				echo "Pattern Match: $line / $pattern"
+			fi
+
+		fi	
+		
+		if 
+			(( "$charCount" % 2 == 1 )); then
+			if 
+				[[ "$char" == "$prevOdd" ]]; then
+				repeatChar=true
+				echo "Odd Match: $line / $prevOdd , $char"
+			fi
+			prevOdd="$char"
+		fi
+
+		if 
+			(( "$charCount" % 2 == 0 )); then
+			if
+				[[ "$char" == "$prevEven" ]]; then
+				repeatChar=true
+				echo "Even Match: $line / $prevEven , $char"
+			fi
+			prevEven="$char"
+		fi
+		
+		pattern="$prevChar$char"
+		prevChar="$char"
+		
+
+	done
+
+	$repeatChar && $repeatStr && ((counter++))
+
+done < "$HOME/advent-of-code/2015/05/05-string.txt"
+
+echo -e "Answer: $MAGENTA$counter$NC"
