@@ -6,45 +6,48 @@
 NC='\e[0m'
 MAGENTA='\e[35m'
 
+# Read through input file line-by-line, character-by-character. Judge each string based on requirements.
 
-#
-
-#naughty=("ab" "cd" "pq" "xy")
 counter=0
 
 while IFS= read -r line; do
+	naughty=false
+	vowels=0
+	prevChar=""
+	double=false
+
+	# Check if the string is naughty, based on whether it contains the character combinations defined below.
+
+	case $line in
+		*ab*|*cd*|*pq*|*xy*)
+			naughty=true ;;
+	esac
 	
-#	bad=false
-#	
-#	for pattern in "${naughty[@]}"; do
-#		if 
-#			[[ "$line" != *"$pattern"* ]]; then
-#			bad=true
-#			break
-#		fi
-#	done
-#	if ! $bad; then
-#			
-#		vowels=$(grep -o '[aeiou]' <<< "$line" | wc -l)
-#       		
-#		if (( vowels >= 3 )) && [[ "$line" =~ (.)\1 ]]; then
-#   			((counter++))
-#		fi
-#	fi
+	# Check if string is naughty, if it is then this loop stops here and we proceed to the next line. Otherwise, it 	continues.
 
-# Contains forbidden substrings
-    if [[ "$line" == *ab* || "$line" == *cd* || "$line" == *pq* || "$line" == *xy* ]]; then
-        continue
-    fi
-    # Rule 1: at least 3 vowels
-    vowels=$(grep -o '[aeiou]' <<< "$line" | wc -l)
-    (( vowels < 3 )) && continue
+	$naughty && continue
 
-    # Rule 2: double letter
-    [[ "$line" =~ (.)\1 ]] || continue
+	# Read through string character-by-character and count each vowel seen, as well as checking for doubles.
 
-    ((counter++))
+	for ((i=0; i<${#line}; i++)); do
+		char="${line:i:1}"
+
+		case "$char" in
+			a|e|i|o|u)
+				((vowels++)) ;;
+		esac
+
+		if [[ "$char" == "$prevChar" ]]; then
+			double=true
+		fi
+
+		prevChar="$char"
+	done
+
+	# Final naughty vs. nice check and echo of results.
+
+	(( vowels >= 3 )) && $double && ((counter++))
 
 done < "$HOME/advent-of-code/2015/05/05-string.txt"
 
-echo -e "Answer: $MAGENTA$counter"
+echo -e "Answer: $MAGENTA$counter$NC"
